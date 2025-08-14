@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// GPT: define App component that use useProfile() hook and render it's data to UI
+import { useProfile } from '@/hooks';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const { data: userProfile, error, isError, isLoading } = useProfile();
+
+  if (isLoading) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <h1>User Profile</h1>
+      {userProfile && (
+        <div>
+          <p>Name: {userProfile.name}</p>
+          <p>Email: {userProfile.email}</p>
+          {/* Render other user profile data as needed */}
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default App
+export default App;
